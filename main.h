@@ -9,5 +9,11 @@ typedef struct {
     int * donnees;
 }COLUMN;
 
-#endif //PROJET_MAIN_H
+typedef struct {
+    COLUMN** donnees;
+    int taillelogique;
+    int taillephysique;
+}DATAFRAME;
 
+
+#endif //PROJET_MAIN_H
