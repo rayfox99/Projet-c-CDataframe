@@ -1,6 +1,3 @@
-//
-// Created by gaspa on 26/04/2024.
-//
 #ifndef PROJET_COLUMN_H
 #define PROJET_COLUMN_H
 
@@ -17,6 +14,13 @@ int number_sup(COLUMN* , int );
 int number_occ(COLUMN* , int );
 int ajouter_colonne_au_dataframe(COLUMN* , DATAFRAME* );
 void print_dataframe(DATAFRAME);
-
+void print_dataframe2(DATAFRAME);
+void print_dataframe_partiel(DATAFRAME,int);
+void print_col_partiel (COLUMN*, int);
+void ajouter_ligne(DATAFRAME,int*);
+void remplir_en_dur(DATAFRAME*);
+void supprimer_ligne(DATAFRAME, int);
+void renommer_colonne(COLUMN*,char*);
+void supprimer_colonne(DATAFRAME*,int);
 #endif //PROJET_COLUMN_H
 
