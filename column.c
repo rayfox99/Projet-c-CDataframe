@@ -106,7 +106,6 @@ int ajouter_colonne_au_dataframe(COLUMN* nom, DATAFRAME *dataframe){
 
     dataframe->donnees[dataframe->taillelogique] = nom;
     dataframe->taillelogique++;
-    printf("\noui %d\n", dataframe->taillelogique);
     return 1;
 }
 
@@ -117,4 +116,97 @@ void print_dataframe(DATAFRAME dataframe){
         print_col(dataframe.donnees[k]);
     }
     printf("\n");
+}
+
+void print_col_partiel(COLUMN* column, int i){
+    int j;
+    for (j = 0; j < column->taille_logique_tableau&&j<i; j++)
+    {
+        printf("\n[%d] : %d", j, column->donnees[j]);
+    }
+}
+
+void print_dataframe_partiel(DATAFRAME dataframe,int val){
+    int k;
+    for (k = 0; k < dataframe.taillelogique; k++){
+        printf("\n%s", dataframe.donnees[k]->name_column);
+        print_col_partiel(dataframe.donnees[k], val);
+    }
+    printf("\n");
+}
+
+void ajouter_ligne(DATAFRAME dataframe, int * i){
+    int j;
+    for (j=0; j<dataframe.taillelogique; j++){
+        inservalue(dataframe.donnees[j],i[j]);
+    }
+}
+
+void supprimer_ligne(DATAFRAME dataframe, int i){
+    int j,k;
+    for (j=0;j<=dataframe.taillelogique-1;j++){
+        dataframe.donnees[j]->taille_logique_tableau--;
+        for(k=i; k<dataframe.donnees[j]->taille_logique_tableau;k++){
+            dataframe.donnees[j]->donnees[k] = dataframe.donnees[j]->donnees[k+1];
+        }
+    }
+    printf("Supression réussie");
+}
+
+void remplir_en_dur(DATAFRAME *dataframe){
+    int i,j;
+    COLUMN * col;
+    for(i=0;i<5;i++) {
+        col = create_column("o");
+        ajouter_colonne_au_dataframe(col, dataframe);
+        for(j=0;j<5;j++) {
+            inservalue(col,0);
+        }
+    }
+}
+void renommer_colonne(COLUMN* col, char*nom){
+    col->name_column = nom;
+}
+void print_dataframe2(DATAFRAME dataframe){
+    int max=0,u,i,t,v,count=1;
+    for (i=0;i<dataframe.taillelogique;i++){
+        if(max<dataframe.donnees[i]->taille_logique_tableau){
+            max=dataframe.donnees[i]->taille_logique_tableau;
+        }
+    }
+    for (i=0;i<max;i++){
+        for (u=0; u<dataframe.taillelogique;u++){
+            if (i==0){
+                printf("%s",dataframe.donnees[u]->name_column);
+                for(t= strlen(dataframe.donnees[u]->name_column);t<15;t++){
+                    printf(" ");
+                }
+            }
+            else {
+                printf("%d", dataframe.donnees[u]->donnees[i]);
+                v=dataframe.donnees[u]->donnees[i];
+                if (v==0){
+                count = 1;}
+                else{
+                    count=0;
+                }
+                while(v!=0){
+                    v=v/10;
+                    count++;
+                }
+                for(t=count;t<15;t++){
+                    printf(" ");
+                }
+            }
+        }
+        printf("\n");
+    }
+}
+
+void supprimer_colonne(DATAFRAME *dataframe, int i){
+    int j;
+    for (j=i;j<dataframe->taillelogique-1;j++){
+        dataframe->donnees[j]=dataframe->donnees[j+1];
+    }
+    dataframe->taillelogique--;
 }
