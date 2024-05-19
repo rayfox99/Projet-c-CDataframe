@@ -1,3 +1,10 @@
+/*
+PROJET CDATAFRAME
+Gaspard MARTOUZET/Rayan EID
+
+Fichier contenant la totalité des fonctions du projet
+*/
+
 }
 void print_col(COLUMN* col){
     int i;
