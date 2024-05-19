@@ -1,8 +1,17 @@
+/*
+PROJET CDATAFRAME
+Gaspard MARTOUZET/Rayan EID
+
+Fichier contenant le menu utilisateur : est le fichier principal du projet, il fait appel aux fonction de column.c
+*/
+
 #include <stdio.h>
 #include "main.h"
 #include "stdlib.h"
 #include "string.h"
 #include "column.h"
+
+
 
 int main() {
     char nom[15];
