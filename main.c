@@ -10,6 +10,7 @@ int main() {
     COLUMN *colonne;
     int i;
     int créé = 0;
+    int x=0;
     int menu = 1;
     int call;
     while (menu == 1) {
@@ -26,7 +27,7 @@ int main() {
             }
         }
         while(menu == 1) {
-            printf("\nListe des fonctions :\n[0] : sortir du programme\n[1] : Créer une colonne\n[2] : Imprimer le dataframe en entier\n[3] : Imprimer le dataframe jusqu'à une certaine ligne\n[4] : Ajouter une ligne de valeur au cdataframe\n[5] : Ajouter une valeur à une colonne\n[6] : Supprimer une ligne du dataframe\n[7] : Remplir en dur\n[8] : Renommer une colonne\n[9] : Imprimer le dataframe mieux\n[10] : Supprimer une colonne du data\n");
+            printf("\nListe des fonctions :\n[0] : sortir du programme\n[1] : Créer une colonne\n[2] : Imprimer le dataframe en entier\n[3] : Imprimer le dataframe jusqu'à une certaine ligne\n[4] : Ajouter une ligne de valeur au cdataframe\n[5] : Ajouter une valeur à une colonne\n[6] : Supprimer une ligne du dataframe\n[7] : Remplir en dur\n[8] : Renommer une colonne\n[9] : Imprimer le dataframe mieux\n[10] : Supprimer une colonne du data\n[11] : Rechercher une valeur dans le dataframe\n[12] : Accéder à une valeur avec ses coordonnées\n[13] : Afficher les noms des colonnes\n[14] : Afficher le nombre de lignes\n[15] : Afficher le nombre de colonnes\n[16] : Nombre d'occurences de x\n[17] : Nombre d'occurences de valeurs plus grandes que x\n[18] : Nombres d'occurences de valeurs plus petites que x\n");
             scanf("%d", &call);
             if (call == 0) {
                 menu = 0;
@@ -90,6 +91,75 @@ int main() {
                 printf("Entrez le numéro de la colonne à supprimer");
                 scanf("%d",&i);
                 supprimer_colonne(cdataframe,i);
+            }
+            if(call ==11){
+                printf("Entrez une valeur à rechercher : \n");
+                scanf("%d",&i);
+                if (chercher_valeur(*cdataframe,i)==1){
+                    printf("La valeur existe bien dans le dataframe\n");
+                }
+                else{
+                    printf("La valeur n'existe pas dans le dataframe\n");
+                }
+            }
+            if(call==12) {
+                int j;
+                int k;
+                printf("Entrez le numéro de la colonne : \n");
+                scanf("%d", &i);
+                printf("Entrez le numéro de la ligne : \n");
+                scanf("%d", &j);
+                acceder_valeur(*cdataframe, i, j);
+                printf("Que voulez vous faire de cette valeur :\n[1] La remplacer\n[2] Rien\n");
+                scanf("%d", &k);
+                if (k == 1) {
+                    printf("Par quelle valeur voulez vous la remplacer ?\n");
+                    scanf("%d", &k);
+                    changer_valeur(*cdataframe, i, j, k);
+                }
+            }
+            if(call==13) {
+                int u,t;
+                for (u = 0; u < cdataframe->taillelogique; u++) {
+                    printf("%s", cdataframe->donnees[u]->name_column);
+                    for (t = strlen(cdataframe->donnees[u]->name_column); t < 15; t++) {
+                        printf(" ");
+                    }
+                }
+            }
+            if(call==14){
+                int max=0;
+                for (i=0;i<cdataframe->taillelogique;i++){
+                    if(max<cdataframe->donnees[i]->taille_logique_tableau){
+                        max=cdataframe->donnees[i]->taille_logique_tableau;
+                    }
+                }
+                printf("Il y a %d lignes au dataframe\n",max);
+            }
+            if(call==15){
+                printf("Il y a %d colonnes au dataframe\n",cdataframe->taillelogique);
+            }
+            if(call==16){
+
+                printf("Entrez la valeur dont on va compter les occurences : ");
+                scanf("%d",&x);
+                printf("Il y a %d occurences de la valeur %d dans le dataframe", nbr_occ(*cdataframe,x),x);
+            }
+            if (call==17){
+
+                printf("Entrez la valeur dont on va compter les occurences de valeurs plus grandes : ");
+                scanf("%d",&x);
+                printf("Il y a %d occurences de valeurs plus grandes que %d dans le dataframe", nbr_plus(*cdataframe,x),x);
+            }
+            if(call==18){
+                printf("Entrez la valeur dont on va compter les occurences de valeurs plus petites : ");
+                scanf("%d",&x);
+                printf("Il y a %d occurences de valeurs plus petites que %d dans le dataframe", nbr_moins(*cdataframe,x),x);
+            }
+            if (call==19){
+                printf("Sélectionner le nombre de colonnes à print ");
+                scanf("%d", &i);
+                print_dataframe_partielcol(*cdataframe,i);
             }
         }
     }
