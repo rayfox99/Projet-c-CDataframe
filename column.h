@@ -22,5 +22,13 @@ void remplir_en_dur(DATAFRAME*);
 void supprimer_ligne(DATAFRAME, int);
 void renommer_colonne(COLUMN*,char*);
 void supprimer_colonne(DATAFRAME*,int);
+int chercher_valeur(DATAFRAME,int);
+void acceder_valeur(DATAFRAME,int,int);
+void changer_valeur(DATAFRAME,int,int,int);
+int nbr_occ(DATAFRAME,int);
+int nbr_plus(DATAFRAME,int);
+int nbr_moins(DATAFRAME,int);
+void print_dataframe_partielcol(DATAFRAME,int);
+
 #endif //PROJET_COLUMN_H
 
