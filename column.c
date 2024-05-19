@@ -6,14 +6,14 @@ Fichier contenant la totalité des fonctions du projet
 */
 
 }
-void print_col(COLUMN* col){
+void print_col(COLUMN* col){ /*Permet l'impression d'une colonne*/
     int i;
     for (i = 0; i < col->taille_logique_tableau; i++)
     {
         printf("\n[%d] : %d", i, col->donnees[i]);
     }
 }
-int number_occ(COLUMN* col, int number){
+int number_occ(COLUMN* col, int number){/*Permet de compter le nombre d'occurence d'une valeur dans une colonne*/
     int i,n;
     n=0;
     for (i = 0; i < col->taille_logique_tableau; i++)
@@ -25,10 +25,10 @@ int number_occ(COLUMN* col, int number){
     }
     return n;
 }
-int val_pos(COLUMN* col, int x){
+int val_pos(COLUMN* col, int x){/*Retourne la valeur dans la colonne col de la valeur n°x*/
     return col->donnees[x];
 }
-int number_sup(COLUMN* col, int number){
+int number_sup(COLUMN* col, int number){/*Permet de compter le nombre de valeurs supérieures à une autre valeur number dans une colonne*/
     int i,n;
     n=0;
     for (i = 0; i < col->taille_logique_tableau; i++)
@@ -40,7 +40,7 @@ int number_sup(COLUMN* col, int number){
     }
     return n;
 }
-int number_inf(COLUMN* col, int number){
+int number_inf(COLUMN* col, int number){/*Permet de compter le nombre de valeurs inférieures à une autre valeur number dans une colonne*/
     int i,n;
     n=0;
     for (i = 0; i < col->taille_logique_tableau; i++)
@@ -52,7 +52,7 @@ int number_inf(COLUMN* col, int number){
     }
     return n;
 }
-COLUMN *dataframe(){
+COLUMN *dataframe(){/*Crée un dataframe et le retourne*/
     COLUMN *cdataframe;
     return cdataframe;
 }
