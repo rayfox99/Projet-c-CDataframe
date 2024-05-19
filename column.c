@@ -1,40 +1,3 @@
-#include <stdio.h>
-#include "main.h"
-#include "stdlib.h"
-#include "string.h"
-
-
-COLUMN * create_column(char *title) {
-    COLUMN *col = (COLUMN *) malloc((sizeof(COLUMN)));
-    col->taille_physique_tableau = 0;
-    col->taille_logique_tableau = 0;
-    col->donnees = NULL;
-
-    col->name_column = (char *) malloc((strlen(title) + 1) * sizeof(char));
-    strcpy(col->name_column, title);
-    return col;
-}
-
-int inservalue (COLUMN *nom, int valeur) {
-    if (nom->taille_physique_tableau == 0) {
-        nom->donnees = malloc(256 * sizeof(int));
-        nom->taille_physique_tableau = 256;
-    } else if (nom->taille_logique_tableau == nom->taille_physique_tableau) {
-        nom->donnees = realloc(nom->donnees, (nom->taille_physique_tableau + 256) * sizeof(int));
-        nom->taille_physique_tableau += 256;
-    }
-    if (nom->donnees == NULL) { return 0; }
-
-    nom->donnees[nom->taille_logique_tableau] = valeur;
-    nom->taille_logique_tableau++;
-
-    return 1;
-}
-
-void delete_column(COLUMN **col){
-    free((*col)->donnees);
-    free(*col);
-    *col = NULL;
 }
 void print_col(COLUMN* col){
     int i;
@@ -135,6 +98,15 @@ void print_dataframe_partiel(DATAFRAME dataframe,int val){
     printf("\n");
 }
 
+void print_dataframe_partielcol(DATAFRAME dataframe,int val){
+    int k;
+    for (k = 0; k < val; k++){
+        printf("\n%s", dataframe.donnees[k]->name_column);
+        print_col(dataframe.donnees[k]);
+    }
+    printf("\n");
+}
+
 void ajouter_ligne(DATAFRAME dataframe, int * i){
     int j;
     for (j=0; j<dataframe.taillelogique; j++){
@@ -160,7 +132,7 @@ void remplir_en_dur(DATAFRAME *dataframe){
         col = create_column("o");
         ajouter_colonne_au_dataframe(col, dataframe);
         for(j=0;j<5;j++) {
-            inservalue(col,0);
+            inservalue(col,-1);
         }
     }
 }
@@ -174,31 +146,32 @@ void print_dataframe2(DATAFRAME dataframe){
             max=dataframe.donnees[i]->taille_logique_tableau;
         }
     }
-    for (i=0;i<max;i++){
+    for (i=-1;i<max;i++){
         for (u=0; u<dataframe.taillelogique;u++){
-            if (i==0){
-                printf("%s",dataframe.donnees[u]->name_column);
-                for(t= strlen(dataframe.donnees[u]->name_column);t<15;t++){
+            if (i==-1) {
+                printf("%s", dataframe.donnees[u]->name_column);
+                for (t = strlen(dataframe.donnees[u]->name_column); t < 15; t++) {
                     printf(" ");
                 }
             }
             else {
                 printf("%d", dataframe.donnees[u]->donnees[i]);
-                v=dataframe.donnees[u]->donnees[i];
-                if (v==0){
-                count = 1;}
-                else{
-                    count=0;
+                v = dataframe.donnees[u]->donnees[i];
+                if (v == 0) { count = 1; }
+                else {
+                    count = 0;
                 }
-                while(v!=0){
-                    v=v/10;
+                if (v < 0) { count++; }
+                while (v != 0) {
+                    v = v / 10;
                     count++;
                 }
-                for(t=count;t<15;t++){
+                for (t = count; t < 15; t++) {
                     printf(" ");
                 }
             }
         }
+
         printf("\n");
     }
 }
@@ -210,3 +183,59 @@ void supprimer_colonne(DATAFRAME *dataframe, int i){
     }
     dataframe->taillelogique--;
 }
+
+int chercher_valeur(DATAFRAME*dataframe,int i){
+    int j,k;
+    for(j=0;j<dataframe->taillelogique;j++){
+        for(k=0;k<dataframe->donnees[j]->taille_logique_tableau;k++){
+            if (dataframe->donnees[j]->donnees[k]==i){
+                return 1;
+            }
+        }
+        return 0;
+    }
+}
+
+void acceder_valeur(DATAFRAME dataframe, int j, int k){
+    printf("La valeur colonne n %d et ligne n %d est : %d",j,k,dataframe.donnees[j]->donnees[k]);
+}
+
+void changer_valeur(DATAFRAME dataframe, int j, int k, int i){
+    dataframe.donnees[j]->donnees[k] = i;
+}
+
+int nbr_occ(DATAFRAME dataframe,int x){
+    int i,j,c=0;
+    for(i=0;i<dataframe.taillelogique;i++){
+        for(j=0;j<dataframe.donnees[i]->taille_logique_tableau;j++){
+            if (dataframe.donnees[i]->donnees[j]==x){
+                c++;
+            }
+        }
+    }
+    return c;
+}
+
+int nbr_plus(DATAFRAME dataframe,int x){
+    int i,j,c=0;
+    for(i=0;i<dataframe.taillelogique;i++){
+        for(j=0;j<dataframe.donnees[i]->taille_logique_tableau;j++){
+            if (dataframe.donnees[i]->donnees[j]>x){
+                c++;
+            }
+        }
+    }
+    return c;
+}
+int nbr_moins(DATAFRAME dataframe,int x){
+    int i,j,c=0;
+    for(i=0;i<dataframe.taillelogique;i++){
+        for(j=0;j<dataframe.donnees[i]->taille_logique_tableau;j++){
+            if (dataframe.donnees[i]->donnees[j]<x){
+                c++;
+            }
+        }
+    }
+    return c;
+}
+
