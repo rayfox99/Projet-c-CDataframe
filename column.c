@@ -52,11 +52,8 @@ int number_inf(COLUMN* col, int number){/*Permet de compter le nombre de valeurs
     }
     return n;
 }
-COLUMN *dataframe(){/*Crée un dataframe et le retourne*/
-    COLUMN *cdataframe;
-    return cdataframe;
-}
-DATAFRAME * create_dataframe(){
+
+DATAFRAME * create_dataframe(){/*Crée un dataframe et le retourne*/
     DATAFRAME* dataframe = (DATAFRAME *) malloc((sizeof(DATAFRAME )));
     dataframe->taillelogique = 0;
     dataframe->taillephysique = 0;
@@ -64,7 +61,7 @@ DATAFRAME * create_dataframe(){
     return dataframe;
 }
 
-int ajouter_colonne_au_dataframe(COLUMN* nom, DATAFRAME *dataframe){
+int ajouter_colonne_au_dataframe(COLUMN* nom, DATAFRAME *dataframe){/*Permet d'ajouter une colonne au dataframe*/
     if (dataframe->taillephysique == 0) {
         dataframe->donnees = malloc(10 * sizeof(COLUMN*));
         dataframe->taillephysique = 10;
@@ -79,7 +76,7 @@ int ajouter_colonne_au_dataframe(COLUMN* nom, DATAFRAME *dataframe){
     return 1;
 }
 
-void print_dataframe(DATAFRAME dataframe){
+void print_dataframe(DATAFRAME dataframe){/*Permet d'imprimer le dataframe avec la fonction print_col plus haut*/
     int k;
     for (k = 0; k < dataframe.taillelogique; k++){
         printf("\n%s", dataframe.donnees[k]->name_column);
@@ -88,7 +85,7 @@ void print_dataframe(DATAFRAME dataframe){
     printf("\n");
 }
 
-void print_col_partiel(COLUMN* column, int i){
+void print_col_partiel(COLUMN* column, int i){/*Permet d'imprimer une colonne jusqu'à une certaine ligne*/
     int j;
     for (j = 0; j < column->taille_logique_tableau&&j<i; j++)
     {
@@ -96,7 +93,7 @@ void print_col_partiel(COLUMN* column, int i){
     }
 }
 
-void print_dataframe_partiel(DATAFRAME dataframe,int val){
+void print_dataframe_partiel(DATAFRAME dataframe,int val){/*Permet d'imprimer le dataframe jusqu'à une certaine ligne en faisant usage de la fonction print col partiel ci dessus*/
     int k;
     for (k = 0; k < dataframe.taillelogique; k++){
         printf("\n%s", dataframe.donnees[k]->name_column);
@@ -105,7 +102,7 @@ void print_dataframe_partiel(DATAFRAME dataframe,int val){
     printf("\n");
 }
 
-void print_dataframe_partielcol(DATAFRAME dataframe,int val){
+void print_dataframe_partielcol(DATAFRAME dataframe,int val){/*Permet d'imprimer le dataframe jusqu'à une certaine colonne*/
     int k;
     for (k = 0; k < val; k++){
         printf("\n%s", dataframe.donnees[k]->name_column);
@@ -114,14 +111,14 @@ void print_dataframe_partielcol(DATAFRAME dataframe,int val){
     printf("\n");
 }
 
-void ajouter_ligne(DATAFRAME dataframe, int * i){
+void ajouter_ligne(DATAFRAME dataframe, int * i){/*Ajoute à la fin de chaque colonne du dataframe des valeurs saisies par l'utilisateur*/
     int j;
     for (j=0; j<dataframe.taillelogique; j++){
         inservalue(dataframe.donnees[j],i[j]);
     }
 }
 
-void supprimer_ligne(DATAFRAME dataframe, int i){
+void supprimer_ligne(DATAFRAME dataframe, int i){/*Permet de supprimer une ligne de valeurs du dataframe, remplace la ligne supprimée par la ligne de dessous et ainsi de suite*/
     int j,k;
     for (j=0;j<=dataframe.taillelogique-1;j++){
         dataframe.donnees[j]->taille_logique_tableau--;
@@ -132,7 +129,7 @@ void supprimer_ligne(DATAFRAME dataframe, int i){
     printf("Supression réussie");
 }
 
-void remplir_en_dur(DATAFRAME *dataframe){
+void remplir_en_dur(DATAFRAME *dataframe){/*crée 5 colonnes de 5 valeurs (toutes des -1) et les ajoute au dataframe*/
     int i,j;
     COLUMN * col;
     for(i=0;i<5;i++) {
@@ -143,10 +140,10 @@ void remplir_en_dur(DATAFRAME *dataframe){
         }
     }
 }
-void renommer_colonne(COLUMN* col, char*nom){
+void renommer_colonne(COLUMN* col, char*nom){/*Permet de renommer une colonne*/
     col->name_column = nom;
 }
-void print_dataframe2(DATAFRAME dataframe){
+void print_dataframe2(DATAFRAME dataframe){/*Permet d'imprimer le dataframe sous la forme d'une grille comme dans un vrai tableur*/
     int max=0,u,i,t,v,count=1;
     for (i=0;i<dataframe.taillelogique;i++){
         if(max<dataframe.donnees[i]->taille_logique_tableau){
@@ -183,15 +180,16 @@ void print_dataframe2(DATAFRAME dataframe){
     }
 }
 
-void supprimer_colonne(DATAFRAME *dataframe, int i){
+void supprimer_colonne(DATAFRAME *dataframe, int i){/*Permet la suppression d'une colonne*/
     int j;
+    free(dataframe->donnees[j]);
     for (j=i;j<dataframe->taillelogique-1;j++){
         dataframe->donnees[j]=dataframe->donnees[j+1];
     }
     dataframe->taillelogique--;
 }
 
-int chercher_valeur(DATAFRAME*dataframe,int i){
+int chercher_valeur(DATAFRAME*dataframe,int i){/*Donne l'information de si une valeur se trouve dans le dataframe ou non en renvoyant un 1 ou un 0*/
     int j,k;
     for(j=0;j<dataframe->taillelogique;j++){
         for(k=0;k<dataframe->donnees[j]->taille_logique_tableau;k++){
@@ -203,15 +201,15 @@ int chercher_valeur(DATAFRAME*dataframe,int i){
     }
 }
 
-void acceder_valeur(DATAFRAME dataframe, int j, int k){
+void acceder_valeur(DATAFRAME dataframe, int j, int k){/*Renvoie la valeur aux coordonnées sélectionnées*/
     printf("La valeur colonne n %d et ligne n %d est : %d",j,k,dataframe.donnees[j]->donnees[k]);
 }
 
-void changer_valeur(DATAFRAME dataframe, int j, int k, int i){
+void changer_valeur(DATAFRAME dataframe, int j, int k, int i){/*Modifie la valeur aux coordonnées sélectionnées*/
     dataframe.donnees[j]->donnees[k] = i;
 }
 
-int nbr_occ(DATAFRAME dataframe,int x){
+int nbr_occ(DATAFRAME dataframe,int x){/*Permet de compter le nombre d'occurence d'une valeur dans le dataframe*/
     int i,j,c=0;
     for(i=0;i<dataframe.taillelogique;i++){
         for(j=0;j<dataframe.donnees[i]->taille_logique_tableau;j++){
@@ -223,7 +221,7 @@ int nbr_occ(DATAFRAME dataframe,int x){
     return c;
 }
 
-int nbr_plus(DATAFRAME dataframe,int x){
+int nbr_plus(DATAFRAME dataframe,int x){/*Permet de compter le nombre de valeurs supérieures à une autre valeur x dans le dataframe*/
     int i,j,c=0;
     for(i=0;i<dataframe.taillelogique;i++){
         for(j=0;j<dataframe.donnees[i]->taille_logique_tableau;j++){
@@ -234,7 +232,7 @@ int nbr_plus(DATAFRAME dataframe,int x){
     }
     return c;
 }
-int nbr_moins(DATAFRAME dataframe,int x){
+int nbr_moins(DATAFRAME dataframe,int x){/*Permet de compter le nombre de valeurs inférieures à une autre valeur x dans le dataframe*/
     int i,j,c=0;
     for(i=0;i<dataframe.taillelogique;i++){
         for(j=0;j<dataframe.donnees[i]->taille_logique_tableau;j++){
