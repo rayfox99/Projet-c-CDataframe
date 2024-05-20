@@ -1,3 +1,4 @@
+
 /*
 PROJET CDATAFRAME
 Gaspard MARTOUZET/Rayan EID
@@ -5,7 +6,45 @@ Gaspard MARTOUZET/Rayan EID
 Fichier contenant la totalité des fonctions du projet
 */
 
+#include <stdio.h>
+#include "main.h"
+#include "stdlib.h"
+#include "string.h"
+
+
+COLUMN * create_column(char *title) {
+    COLUMN *col = (COLUMN *) malloc((sizeof(COLUMN)));
+    col->taille_physique_tableau = 0;
+    col->taille_logique_tableau = 0;
+    col->donnees = NULL;
+
+    col->name_column = (char *) malloc((strlen(title) + 1) * sizeof(char));
+    strcpy(col->name_column, title);
+    return col;
 }
+
+int inservalue (COLUMN *nom, int valeur) {
+    if (nom->taille_physique_tableau == 0) {
+        nom->donnees = malloc(256 * sizeof(int));
+        nom->taille_physique_tableau = 256;
+    } else if (nom->taille_logique_tableau == nom->taille_physique_tableau) {
+        nom->donnees = realloc(nom->donnees, (nom->taille_physique_tableau + 256) * sizeof(int));
+        nom->taille_physique_tableau += 256;
+    }
+    if (nom->donnees == NULL) { return 0; }
+
+    nom->donnees[nom->taille_logique_tableau] = valeur;
+    nom->taille_logique_tableau++;
+
+    return 1;
+}
+
+void delete_column(COLUMN **col){
+    free((*col)->donnees);
+    free(*col);
+    *col = NULL;
+}
+
 void print_col(COLUMN* col){ /*Permet l'impression d'une colonne*/
     int i;
     for (i = 0; i < col->taille_logique_tableau; i++)
@@ -182,7 +221,9 @@ void print_dataframe2(DATAFRAME dataframe){/*Permet d'imprimer le dataframe sous
 
 void supprimer_colonne(DATAFRAME *dataframe, int i){/*Permet la suppression d'une colonne*/
     int j;
-    free(dataframe->donnees[j]);
+    COLUMN * col =dataframe->donnees[i];
+    dataframe->donnees[i] = 0;
+    free(col);
     for (j=i;j<dataframe->taillelogique-1;j++){
         dataframe->donnees[j]=dataframe->donnees[j+1];
     }
@@ -243,4 +284,3 @@ int nbr_moins(DATAFRAME dataframe,int x){/*Permet de compter le nombre de valeur
     }
     return c;
 }
-
